@@ -1,21 +1,19 @@
-import axios from "axios";
-import { AxiosResponse, AxiosError, AxiosRequestConfig } from "axios";
+import axios from "axios"
+import { AxiosResponse, AxiosError, AxiosRequestConfig } from "axios"
+import { Platform } from "react-native"
 
-const baseURL = 'http://localhost:1337/api/'
+const baseURL =
+  Platform.OS === "android"
+    ? process.env.EXPO_PUBLIC_ANDROID_API_URL
+    : process.env.EXPO_PUBLIC_API_URL
+// const baseURL = 'http://localhost:1337/api/'
 export const request = axios.create({
-    baseURL
+  baseURL,
 })
 
 // , headers: {
-    // Authorization: `Bearer token`,
-    // "Content-Type": `application/json`,
-    // "Content-Type": `multipart/form-data`,
-    // Accept: 'text/html'
-// }
-
-// export const request = async <T>(options: AxiosRequestConfig) => {
-//     const onSuccess = (res: AxiosResponse<T>) => res.data
-//     const onError = (err: AxiosError) => err
-
-//     return await client(options).then(onSuccess).catch(onError)
+// Authorization: `Bearer token`,
+// "Content-Type": `application/json`,
+// "Content-Type": `multipart/form-data`,
+// Accept: 'text/html'
 // }
