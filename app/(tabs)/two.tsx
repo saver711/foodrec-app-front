@@ -1,44 +1,47 @@
-import { useEffect } from "react"
-import { StyleSheet } from "react-native"
-
+import {
+  BottomSheetModal,
+  BottomSheetModalProvider
+} from "@gorhom/bottom-sheet"
 import { Text, View } from "../../components/Themed"
-import MapView from "react-native-maps"
-import { useQuery } from "@tanstack/react-query"
-import { Restaurant } from "../../components/restaurants/models/restaurants.model"
-import axios from "axios"
-import { StrapiWrapper } from "../api/models/strapi-wrapper"
-
+import { Button, StyleSheet } from "react-native"
+import { useCallback, useMemo, useRef } from "react"
 export default function TabTwoScreen() {
-  const { data, error } = useQuery({
-    queryKey: ["restaurants"],
-    queryFn: () =>
-      axios.get<StrapiWrapper<Restaurant[]>>(
-        "http://10.0.2.2:1337/api/restaurants",
-        {
-          params: { populate: "*" },
-        }
-      ),
-  });
+  // ref
+  const bottomSheetModalRef = useRef<BottomSheetModal>(null)
 
-  useEffect(() => {
-    console.log(data?.data);
-    console.log("error", error); 
-  }, [data, error]);
+  // variables
+  const snapPoints = useMemo(() => ["92%", "40%"], [])
+
+  // callbacks
+  const handlePresentModalPress = useCallback(() => {
+    bottomSheetModalRef.current?.present()
+  }, [])
+  const handleSheetChanges = useCallback((index: number) => {
+    console.log("handleSheetChanges", index)
+  }, [])
   return (
-    <View style={styles.container}>
-      <Text>12</Text>
-      {data && <Text>{data.data.data[0].id}</Text>}
-      <MapView style={styles.map} />
-    </View>
+    <BottomSheetModalProvider>
+      <View style={styles.container}>
+        <Button onPress={() => console.log("ssss")} title="log" color="black" />
+        <Button
+          onPress={handlePresentModalPress}
+          title="Present Modal"
+          color="black"
+        />
+      </View>
+    </BottomSheetModalProvider>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    padding: 24,
+    justifyContent: "center",
+    backgroundColor: "grey"
   },
-  map: {
-    width: "100%",
-    height: "100%",
-  },
+  contentContainer: {
+    flex: 1,
+    alignItems: "center"
+  }
 })
