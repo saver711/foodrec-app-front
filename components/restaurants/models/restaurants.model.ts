@@ -34,7 +34,7 @@ export type MealAttributes = {
 } & AuditKeys
 
 export type RestaurantLogo = {
-  data: { id: number; attributes: RestaurantLogoAttributes }
+  data: { id: number; attributes: RestaurantLogoAttributes } | null
 }
 
 export type RestaurantLogoAttributes = {

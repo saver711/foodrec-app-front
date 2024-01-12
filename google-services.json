@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "534765835504",
+    "project_id": "foodrec-ed317",
+    "storage_bucket": "foodrec-ed317.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:534765835504:android:f661d905d300b3434b1e35",
+        "android_client_info": {
+          "package_name": "com.ahmedhassan711.foodrec"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA7mszPcN4yOcZzj7VNe91sRGA8DBaU4EM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

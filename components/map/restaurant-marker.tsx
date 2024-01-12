@@ -1,50 +1,37 @@
-import { TouchableWithoutFeedback } from "react-native-gesture-handler"
+import { Dispatch, SetStateAction } from "react"
+import { StyleSheet } from "react-native"
 import { Marker } from "react-native-maps"
 import { Text, View } from "../Themed"
-import { StyleSheet } from "react-native"
 import { Location } from "../locations/models/locations.model"
-import { useQuery } from "@tanstack/react-query"
-import { request } from "../../app/api/axios-util"
-import { StrapiWrapper } from "../../app/api/models/strapi-wrapper"
-import { Restaurant } from "../restaurants/models/restaurants.model"
 
 type RestaurantMarkerProps = {
   location: Location
+  setActiveRestaurantLocation: Dispatch<SetStateAction<Location | null>>
+  openRestaurantModal: () => void
 }
-export const RestaurantMarker = ({ location }: RestaurantMarkerProps) => {
+export const RestaurantMarker = ({
+  location,
+  setActiveRestaurantLocation,
+  openRestaurantModal
+}: RestaurantMarkerProps) => {
   // FETCH RESTAURANT
-  const {
-    data,
-    error: fetchingLocationsError,
-    isLoading: isLoadingLocations,
-    refetch
-  } = useQuery({
-    queryKey: ["restaurants", location.attributes.restaurant.data.id],
-    queryFn: () =>
-      request.get<StrapiWrapper<Restaurant>>(
-        `restaurants/${location.attributes.restaurant.data.id}`,
-        {
-          params: { "populate[restaurant]": "*" }
-        }
-      ),
-    enabled: false
-  })
 
-  const fetchRestaurant = () => {}
-
+  const fetchRestaurant = () => {
+    setActiveRestaurantLocation(location)
+    openRestaurantModal()
+  }
   return (
     <Marker
+      onPress={fetchRestaurant}
       coordinate={{
         latitude: location.attributes.lat,
-        longitude: location.attributes.long
+        longitude: location.attributes.long,
       }}
     >
-      <TouchableWithoutFeedback onPress={fetchRestaurant}>
-        <View className="flex gap-1 items-center justify-center">
-          <View style={styles.dot} />
-          <Text>{location.attributes.restaurant.data.attributes.name}</Text>
-        </View>
-      </TouchableWithoutFeedback>
+      <View className="flex gap-1 items-center justify-center bg-transparent">
+        <View style={styles.dot} />
+        <Text>{location.attributes.restaurant.data.attributes.name}</Text>
+      </View>
     </Marker>
   )
 }
@@ -54,6 +41,6 @@ const styles = StyleSheet.create({
     backgroundColor: "red",
     width: 15,
     height: 15,
-    borderRadius: 15
-  }
+    borderRadius: 15,
+  },
 })
